@@ -37,3 +37,62 @@ def chooseBestFeatureToSpit(dataSet):
      baseEntropy=calcShannonEnt(dataSet)
      bestInfoGain=0
      bestFeature=-1
+     for i in range(numFeatures):
+        featList=[example[i]  for example  in dataSet]
+        uniqueVals=set(feaList)    #这儿的理解有点复杂
+        newEntropy=0
+        for value in uniqueVals：
+           subDataSet=splitDataSet(dataSet,i,value)
+           prob=len(subDataSet)/float(len(dataSet))
+           newEntropy+=prob*calcShannonEnt(subDataSet)
+        infoGain=baseEntropy-newEntropy
+        if(infoGain>bestInfoGain): 
+          bestInfoGain=infoGain
+          bestFeature=i
+      return bestFeature
+
+def majorityCnt(classList):   #返回出现次数最多的分类特征
+    classCount={}               #和KNN算法中的那个函数很类似，亮点在for循环和最后的排序输出即为最多的标签
+    for vote in classList:
+        if vote not in classList.keys():
+            classCount[vote]=0
+        classCount[vote]+=1
+      sortedClassCount=sorted(classCount.iteritems(),key=operator.itemgetter(1),reverse=True)
+      return sortedClassCount[0][0]
+
+
+
+
+def createTree(dataSet,labels):
+    classList=[example[-1] for example in dataSet]   #取出最后一列即labels
+    if classList.count(classList[0])==len(classList) #即所有元素都一样  label都一样则返回这个label
+         return classList[0]
+    if len(dataSet[0])==1:    #数据集遍历完所有的特征    不是很理解
+         return majorityCnt(classList)  #返回classList中最多的分类标签
+    bestFeat=chooseBestFeatureTosplit(dataSet)    #此处为返回划分的最佳特征的索引值
+    myTree={bestFeatLabel:{}}    #这儿理解为建立根节点依次开始生长
+    del(labels[bestFeat])
+    featValues=[example[bestFeat] for   example in dataSet]   #按索引找到最佳划分特征
+    uniqueVals=set(featValues)
+    for value in uniquaVals:
+       subLabels=labels[:]    #递归建立树，很经典的代码
+       myTree[bestFeatlabel][value]=createTree(splitDataSet(dataSet,bestFeat,value),subLabels)   
+    return myTree
+
+import matplotlib.pyplot as plt
+decisionNode=dict(boxstyle="sawtooth",fc="0.8")
+leafNode=dict(boxstyle="round4",fc="0.8")
+arrow_args=dict(arrowstyle="<-")
+
+def plotNode(nodeTxt,centerPt,parentPt,nodeType):
+    createPlot.ax1.annotate(nodeTxt,xy=parentPt,xycoords="axes fraction",\
+                              xytext=centerPt,textcoords="axes fraction",\
+                              va="center",ha="center",bbox=nodeType,arrowprops=arrow_args)
+
+def createPlot():
+   fig=plt.figure(1,facecolor="white")
+   fig.clf()
+   createPlot.ax1=plt.subplot(111,frameon=False)
+   plotNode("决策节点",(0.5,0.1),(0.1,0.5),decisionNode)
+   plotNode("叶节点",(0.8,0.1),(0.3,0.8),leafNode)
+   plt.show()
