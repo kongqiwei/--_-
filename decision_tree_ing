@@ -78,3 +78,27 @@ def createTree(dataSet,labels):
        subLabels=labels[:]    #递归建立树，很经典的代码
        myTree[bestFeatlabel][value]=createTree(splitDataSet(dataSet,bestFeat,value),subLabels)   
     return myTree
+def  classify(inputTree,featLabels,testVec):  #递归将inputTree进行分类，返回分类标签
+    firstStr=inputTree.keys()[0]
+    secondDict=inputTree[firstStr]
+    featIndex=featLabels.index(firstStr)  #使用了index方法查找列表中第一个匹配firstStr的元素
+    for key in secondDict.keys():
+        if testVec[featIndex]==key:
+            if type(secondDict[key]).__name__=="dict":
+                classLabel=classify(secondDict[key],featLabels,testVec)   #仅仅需要在递归入口改变inputTree
+            else:# 即数据对应字典，而labels和测试向量无需改变
+                classLabel=secondDict[key]
+    return classLabel
+
+def storeTree(inputTree,filename):
+    import pickle
+    fw=open(filename,'w')
+    pickle.dump(inputTree,fw)
+    fw.close()
+
+def grabTree(filename):
+    import  pickle
+    fr=open(filename)
+    return pickle.load(fr)
+
+
