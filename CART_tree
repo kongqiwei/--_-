@@ -1,0 +1,46 @@
+#树回归
+#《机器学习实战p161页作者说其实也可以考虑用类方法自定义树的机构，例如：
+class treeNode():
+   def __init__(self,feat,val,right,left):
+       feature=feat
+       valueOfsplit=val
+       rightBranch=right
+       leftBracnch=left
+
+###因为Python灵活，所以抛弃定义类的方式，而用字典结构，但是其实类是一个可以使用的选择
+
+from numpy import*
+
+def loadDataSet(filename):
+    dataMat[]
+    fr=open(filename)
+    for line in fr.readlines():
+        curLine=line.strip().split('\t')
+        fltLine=map(float,curLine)
+        dataMat.append(fltLine)
+    return dataMat
+
+def binSplitDataSet(dataSet,feature,value):
+    mat0=dataSet[nonzero(dataSet[:,feature]>value)[0],:][0]  #遍历数据，如果feature的value符合要求则划到一个集合
+    mat1=dataSet[nonzero(dataSet[:,feature]<=value)[0],:][0]
+
+def createTree(dataSet,leafTyp=regLeaf,errType=regErr,ops=(1,4)):
+    feat,val=chooseBestSplit(dataSet,leafType,errType,ops)
+    if feat==None:
+       return val
+    retTree={}  #建立了一个字典结构的树，后面在加入左右孩子
+    retTree['spInd']=feat  #记录每一个节点的划分特征
+    retTree['spVal']=val     #记录每一个节点的划分值
+    ISet,rSet=binSplitDataSet(dataSet,feat,val)   #调用上一个函数将数据一分为二
+    retTree['left']=createTree(lSet,leafType,errType,ops)   #递归建立左右树
+    retTree['right']=createTree(rSet,leafType,errType,ops)
+    return retTree
+
+def regLeaf(dataSet):   #叶子节点，返回数据集的均值
+    return mean(dataSet[:,-1])
+
+def regErr(dataSet):   #误差函数，调用了var方法
+    return var(dataSet[:,-1])*shape(dataSet)[0]
+
+def  chooseBestSplit(dataSet,leafType=regLeaf,errType=regErr,ops=(1,4))  #获取当前节点数据集的最佳划分特征和最佳划分值
+     
