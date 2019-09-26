@@ -23,7 +23,7 @@ def creatDataSet():
   labels=['no surfacing','flippers']
   return dataSet,labels
 
-def splitDataSet(dataset,axis,value):
+def splitDataSet(dataset,axis,value):    #按照给定特征值对数据进行划分
     retDataSet=[]
     for featVec in dataset:
        if featVec[axis]==value:
