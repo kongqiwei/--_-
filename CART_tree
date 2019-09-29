@@ -12,7 +12,7 @@ class treeNode():
 from numpy import*
 
 def loadDataSet(filename):
-    dataMat[]
+    dataMat=[]
     fr=open(filename)
     for line in fr.readlines():
         curLine=line.strip().split('\t')
