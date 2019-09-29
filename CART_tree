@@ -43,7 +43,7 @@ def regErr(dataSet):   #误差函数，调用了var方法求方差
     return var(dataSet[:,-1])*shape(dataSet)[0]
 
 def chooseBestSplit(dataSet,leafType=regLeaf,errType=regErr,ops=(1,4))  #获取最佳划分索引和最佳划分值
-    tolS=ops[0]  #容许误差下降值，即如果变化效果小于这个值则认为一些很不错了
+    tolS=ops[0]  #容许误差下降值，即如果变化效果小于这个值则认为已经训练的很不错了
     tolN=ops[0]   #数据集最少样本数
     if len(set(dataSet[:,-1].T.tolist()[0]))==1:  #如果所有的值相等则退出，set这个方法是一个集合，集合的长度为1则都相等
         return None,leafType(dataSet)    #调用传入的参数函数返回数据均值
