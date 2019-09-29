@@ -31,7 +31,7 @@ def createTree(dataSet,leafTyp=regLeaf,errType=regErr,ops=(1,4)):
     retTree={}  #建立了一个字典结构的树，后面在加入左右孩子
     retTree['spInd']=feat  #记录每一个节点的划分特征
     retTree['spVal']=val     #记录每一个节点的划分值
-    ISet,rSet=binSplitDataSet(dataSet,feat,val)   #调用上一个函数将数据一分为二
+    lSet,rSet=binSplitDataSet(dataSet,feat,val)   #调用上一个函数将数据一分为二
     retTree['left']=createTree(lSet,leafType,errType,ops)   #递归建立左右树
     retTree['right']=createTree(rSet,leafType,errType,ops)
     return retTree
