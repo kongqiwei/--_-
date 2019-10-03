@@ -7,6 +7,7 @@ class treeNode():
        rightBranch=right
        leftBracnch=left
 
+
 ###因为Python灵活，所以抛弃定义类的方式，而用字典结构，但是其实类是一个可以使用的选择
 
 from numpy import*
@@ -20,9 +21,19 @@ def loadDataSet(filename):
         dataMat.append(fltLine)
     return dataMat
 
-def binSplitDataSet(dataSet,feature,value):
+def binSplitDataSet(dataSet,feature,value):   #按照给定特征将数据集划分为两部分返回
     mat0=dataSet[nonzero(dataSet[:,feature]>value)[0],:][0]  #遍历数据，如果feature的value符合要求则划到一个集合
     mat1=dataSet[nonzero(dataSet[:,feature]<=value)[0],:][0]
+    
+#加一个函数和上面这个对比理解：
+def splitDataSet(dataSet,axis,value):  #按照给定特征抽取数据集，返回的是符合要求的数据 
+    retDataSet=[]
+    for featVec in dataSet:
+        if featVec[axis]==value:
+            reducedFeatVec=featVec[:axis]
+            reducedFeatVec.extend(featVec[axis+1:])
+            retDataSet.append(reducedFeatVec)
+    return retDataSet
 
 def createTree(dataSet,leafTyp=regLeaf,errType=regErr,ops=(1,4)):
     feat,val=chooseBestSplit(dataSet,leafType,errType,ops)
