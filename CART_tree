@@ -162,3 +162,5 @@ def createForeCast(tree,testData,modelEval=regTree):   #以向量形式返回预
     for i in range(m):
       yHat[i,0]=treeForeCast(tree,mat(testData[i]),modelEval)
     return yHat
+
+#更改一部分代码可是实现很多树的操作
